@@ -164,7 +164,7 @@ module.exports = {
       const getId = await contactModel.getDataId(id)
       const idRoom = getId[0].room_chat
       if (getId.length > 0) {
-        console.log(idRoom);
+        // console.log(idRoom);
         const result = await contactModel.deleteData(id)
         await contactModel.deleteChat(idRoom)
         return helper.response(res, 200, 'Succes Delete Data', result)
@@ -173,8 +173,8 @@ module.exports = {
       }
     } catch (error) {
       console.log('wddw', req.params)
-      // return helper.response(res, 400, 'Bad Request', error)
-      console.log(error);
+      return helper.response(res, 400, 'Bad Request', error)
+      // console.log(error);
     }
   }
 }

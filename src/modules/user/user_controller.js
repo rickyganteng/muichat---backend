@@ -4,8 +4,14 @@ const client = redis.createClient()
 
 const userModel = require('./user_model')
 
-require('dotenv').config()
-
+require('dotenv').config({
+  host: process.env.REDIS_HOSTNAME,
+  port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD
+})
+client.on('connect', () => {
+  console.log('Connected to our redis instance!')
+})
 module.exports = {
   getAllData: async (req, res) => {
     try {
