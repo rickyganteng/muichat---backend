@@ -1,17 +1,11 @@
 const helper = require('../../helpers/wrapper')
-const redis = require('redis')
-const client = redis.createClient()
+// const redis = require('redis')
+// const client = redis.createClient()
 
 const userModel = require('./user_model')
 
-require('dotenv').config({
-  host: process.env.REDIS_HOSTNAME,
-  port: process.env.REDIS_PORT,
-  password: process.env.REDIS_PASSWORD
-})
-client.on('connect', () => {
-  console.log('Connected to our redis instance!')
-})
+require('dotenv').config()
+
 module.exports = {
   getAllData: async (req, res) => {
     try {
@@ -20,11 +14,11 @@ module.exports = {
         search = helper.response(res, 404, 'User Not Found', null)
       }
       const result = await userModel.getData(search)
-      client.setex(
-        `getuser:${JSON.stringify(req.query)}`,
-        3600,
-        JSON.stringify({ result })
-      )
+      // client.setex(
+      //   `getuser:${JSON.stringify(req.query)}`,
+      //   3600,
+      //   JSON.stringify({ result })
+      // )
       return helper.response(res, 200, 'Success Get Data', result)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
@@ -34,7 +28,7 @@ module.exports = {
     try {
       const { id } = req.params
       const result = await userModel.getDataById(id)
-      client.set(`getUserid:${id}`, JSON.stringify(result))
+      // client.set(`getUserid:${id}`, JSON.stringify(result))
       return helper.response(res, 200, `Success Get Data by id ${id}`, result)
     } catch (error) {
       return helper.response(res, 400, 'Bad Request', error)
